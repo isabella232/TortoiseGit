@@ -31,14 +31,17 @@ matrix:
 init:
 - git version
 build_script:
-- git submodule update --init -- ext/googletest ext/libgit2 ext/simpleini ext/tgit ext/zlib ext/pcre2 ext/json
-- cd ext\libgit2
+- git submodule update --init -- ext/googletest ext/libgit2 ext/simpleini ext/tgit ext/zlib ext/pcre2 ext/json ext/OGDF
 - git config --global user.email "dummy@example.com"
 - git config --global user.name "Dummy Name"
+- cd ext\libgit2
 - for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+- cd ..\..
+- cd ext\OGDF
+- for %%G in (..\ogdf-*.patch) do ( type %%G | git am )
+- cd ..\..
 - git config --unset --global user.email
 - git config --unset --global user.name
-- cd ..\..
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 for:
@@ -52,7 +55,7 @@ for:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release64\bin\tests.exe
     - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/OGDF ext/hunspell
+    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/hunspell
     - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   -
     matrix:
@@ -110,7 +113,7 @@ for:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release\bin\tests.exe
     - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/OGDF ext/hunspell
+    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/hunspell
     - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   -
     matrix:
@@ -122,7 +125,7 @@ for:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release64\bin\tests.exe
     - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\CustomActions11" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/OGDF ext/hunspell
+    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/hunspell
     - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
     # check for missing pot entries
     - msbuild "src\TortoiseGit.sln" /m /verbosity:minimal /p:Configuration=TortoisePot-%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
